@@ -1,0 +1,13 @@
+name: Truffle Tests
+on: [push]
+jobs:
+  check-eslint-prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: yarn install
+      - run: ./node_modules/.bin/mnemonics > secrets/.mnemonic
+      - run: echo "infurakey" > secrets/.infura
+      - name: Run contract tests
+        run: yarn run test
