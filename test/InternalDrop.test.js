@@ -64,6 +64,12 @@ contract("InternalDrop", (accounts) => {
       const bobToken = await internalDrop.addressToToken(bobAddress);
       const ownerToken = await internalDrop.addressToToken(ownerAddress);
 
+      console.log("==========================================");
+      console.log("ALICE", aliceToken.toNumber());
+      console.log("BOB", bobToken.toNumber());
+      console.log("OWNER", ownerToken.toNumber());
+      console.log("==========================================");
+
       assert.notStrictEqual(aliceToken.toNumber(), 0);
       assert.notStrictEqual(bobToken.toNumber(), 0);
       assert.notStrictEqual(ownerToken.toNumber(), 0);
@@ -80,6 +86,12 @@ contract("InternalDrop", (accounts) => {
       const aliceToken = await internalDrop.addressToToken(aliceAddress);
       const bobToken = await internalDrop.addressToToken(bobAddress);
       const ownerToken = await internalDrop.addressToToken(ownerAddress);
+
+      console.log("==========================================");
+      console.log("ALICE", aliceToken.toNumber());
+      console.log("BOB", bobToken.toNumber());
+      console.log("OWNER", ownerToken.toNumber());
+      console.log("==========================================");
 
       assert.notStrictEqual(aliceToken.toNumber(), 0);
       assert.notStrictEqual(bobToken.toNumber(), 0);
