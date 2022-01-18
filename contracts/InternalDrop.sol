@@ -17,11 +17,12 @@ contract InternalDrop is Ownable {
       require(addresses.length > 0, "At least one address is needed");
       require(tokenIds.length > 0, "At least one tokenId is needed");
 
-      tokensList = tokenIds;
+      //tokensList = tokenIds;
+      uint256 tokensLength = tokenIds.length;
 
       for(uint i=0; i < addresses.length; i++){
 
-        if(tokensList.length == 0) {
+        if(tokensLength == 0) {
           break;
         }
 
@@ -31,15 +32,16 @@ contract InternalDrop is Ownable {
           continue;
         }
 
-        uint256 tokenIndex = _getRandomNumber(tokensList.length);
+        uint256 tokenIndex = _getRandomNumber(tokensLength);
 
-        uint256 tokenToAssign = tokensList[tokenIndex];
+        uint256 tokenToAssign = tokenIds[tokenIndex];
 
-        if(tokensList[tokenIndex] != 0) {
-          tokensList[tokenIndex] = tokensList[tokensList.length-1];
+        if(tokenIds[tokenIndex] != 0) {
+          tokenIds[tokenIndex] = tokenIds[tokenIds.length-1];
         }
 
-        tokensList.pop();
+        tokensLength--;
+        //tokensList.pop();
 
         addressToToken[addr] = tokenToAssign;
       }

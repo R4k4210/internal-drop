@@ -64,6 +64,10 @@ contract("InternalDrop", (accounts) => {
       const bobToken = await internalDrop.addressToToken(bobAddress);
       const ownerToken = await internalDrop.addressToToken(ownerAddress);
 
+      console.log("alice", aliceToken.toNumber());
+      console.log("bob", bobToken.toNumber());
+      console.log("owner", ownerToken.toNumber());
+
       assert.notStrictEqual(aliceToken.toNumber(), 0);
       assert.notStrictEqual(bobToken.toNumber(), 0);
       assert.notStrictEqual(ownerToken.toNumber(), 0);
