@@ -34,7 +34,7 @@ contract("InternalDrop", (accounts) => {
         internalDrop.assignTokensToWallets(addresses, tokens, {
           from: ownerAddress,
         }),
-        "At leats one tokenId is needed"
+        "At least one tokenId is needed"
       );
     });
 
@@ -46,8 +46,44 @@ contract("InternalDrop", (accounts) => {
         internalDrop.assignTokensToWallets(addresses, tokens, {
           from: ownerAddress,
         }),
-        "At leats one address is needed"
+        "At least one address is needed"
       );
+    });
+  });
+
+  describe("assign", () => {
+    it("should each wallet have one token", async () => {
+      const addresses = [aliceAddress, bobAddress, ownerAddress];
+      const tokens = [100, 101, 102];
+
+      await internalDrop.assignTokensToWallets(addresses, tokens, {
+        from: ownerAddress,
+      });
+
+      const aliceToken = await internalDrop.addressToToken(aliceAddress);
+      const bobToken = await internalDrop.addressToToken(bobAddress);
+      const ownerToken = await internalDrop.addressToToken(ownerAddress);
+
+      assert.notStrictEqual(aliceToken.toNumber(), 0);
+      assert.notStrictEqual(bobToken.toNumber(), 0);
+      assert.notStrictEqual(ownerToken.toNumber(), 0);
+    });
+
+    it("should get 0 on the last address", async () => {
+      const addresses = [aliceAddress, bobAddress, ownerAddress];
+      const tokens = [100, 101];
+
+      await internalDrop.assignTokensToWallets(addresses, tokens, {
+        from: ownerAddress,
+      });
+
+      const aliceToken = await internalDrop.addressToToken(aliceAddress);
+      const bobToken = await internalDrop.addressToToken(bobAddress);
+      const ownerToken = await internalDrop.addressToToken(ownerAddress);
+
+      assert.notStrictEqual(aliceToken.toNumber(), 0);
+      assert.notStrictEqual(bobToken.toNumber(), 0);
+      assert.strictEqual(ownerToken.toNumber(), 0);
     });
   });
 });
