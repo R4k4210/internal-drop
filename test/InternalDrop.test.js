@@ -22,7 +22,8 @@ contract("InternalDrop", (accounts) => {
       await truffleAssert.fails(
         internalDrop.assignTokensToWallets(addresses, tokens, {
           from: aliceAddress,
-        })
+        }),
+        truffleAssert.ErrorType.REVERT
       );
     });
 
@@ -34,6 +35,7 @@ contract("InternalDrop", (accounts) => {
         internalDrop.assignTokensToWallets(addresses, tokens, {
           from: ownerAddress,
         }),
+        truffleAssert.ErrorType.REVERT,
         "At least one tokenId is needed"
       );
     });
@@ -46,13 +48,14 @@ contract("InternalDrop", (accounts) => {
         internalDrop.assignTokensToWallets(addresses, tokens, {
           from: ownerAddress,
         }),
+        truffleAssert.ErrorType.REVERT,
         "At least one address is needed"
       );
     });
   });
 
   describe("assign", () => {
-    it("should each wallet have one token", async () => {
+    it("should have one token per wallet", async () => {
       const addresses = [aliceAddress, bobAddress, ownerAddress];
       const tokens = [100, 101, 102];
 
@@ -96,6 +99,30 @@ contract("InternalDrop", (accounts) => {
       assert.notStrictEqual(aliceToken.toNumber(), 0);
       assert.notStrictEqual(bobToken.toNumber(), 0);
       assert.strictEqual(ownerToken.toNumber(), 0);
+    });
+
+    it("should fail if token is null", async () => {
+      const addresses = [aliceAddress, bobAddress, ownerAddress];
+      const tokens = [100, 0, 102];
+
+      await truffleAssert.fails(
+        internalDrop.assignTokensToWallets(addresses, tokens, {
+          from: ownerAddress,
+        }),
+
+        truffleAssert.ErrorType.REVERT,
+        "Token cannot be null"
+      );
+
+      const aliceToken = await internalDrop.addressToToken(aliceAddress);
+      const bobToken = await internalDrop.addressToToken(bobAddress);
+      const ownerToken = await internalDrop.addressToToken(ownerAddress);
+
+      console.log("==========================================");
+      console.log("ALICE", aliceToken.toNumber());
+      console.log("BOB", bobToken.toNumber());
+      console.log("OWNER", ownerToken.toNumber());
+      console.log("==========================================");
     });
   });
 });
